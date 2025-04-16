@@ -5,11 +5,12 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function CtaSection() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
-
+  const navigate = useNavigate();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -19,6 +20,20 @@ export default function CtaSection() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  const [errorMessage, setErrorMessage] = useState(""); // For displaying error messages
+
+  // Example function to check if the user is logged in
+  const checkLoginStatus = () => {
+    // Replace with actual login check (e.g., check if JWT token exists)
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+      navigate("/login");
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,19 +42,23 @@ export default function CtaSection() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if the user is logged in before submitting the form
+    checkLoginStatus();
+    if (!isLoggedIn) {
+      setErrorMessage("You must be logged in to join the waitlist.");
+      return; // Stop form submission if not logged in
+    }
+
     setIsSubmitting(true);
+    setErrorMessage(""); // Clear any previous error message
 
     try {
-      // Replace with your backend API endpoint
       const response = await axios.post("/api/submitForm", formState);
 
       if (response.status === 200) {
-        // Simulating a successful form submission
-        console.log("Form submitted:", formState);
         setIsSubmitting(false);
         setIsSubmitted(true);
-
-        // Reset form state after successful submission
         setFormState({
           name: "",
           email: "",
@@ -62,7 +81,6 @@ export default function CtaSection() {
     >
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left side section with animation */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
@@ -74,7 +92,6 @@ export default function CtaSection() {
                 Dementia Care
               </span>
             </h2>
-
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
               Be among the first to access MemoTag's revolutionary AI platform.
               Whether you're a healthcare provider, caregiver, or researcher,
@@ -82,7 +99,6 @@ export default function CtaSection() {
               health.
             </p>
 
-            {/* List of benefits with icons */}
             <div className="space-y-4 mb-8">
               {[
                 "Early access to our platform",
@@ -99,7 +115,6 @@ export default function CtaSection() {
               ))}
             </div>
 
-            {/* Limited availability notice */}
             <div className="p-6 bg-teal-50 dark:bg-teal-900/20 rounded-xl">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
                 Limited Availability
@@ -111,7 +126,6 @@ export default function CtaSection() {
             </div>
           </motion.div>
 
-          {/* Right side section with form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
@@ -119,7 +133,6 @@ export default function CtaSection() {
             className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 shadow-xl"
           >
             {isSubmitted ? (
-              // Display success message after submission
               <div className="h-full flex flex-col items-center justify-center text-center py-8">
                 <div className="w-16 h-16 bg-teal-100 dark:bg-teal-900/50 rounded-full flex items-center justify-center mb-4">
                   <CheckCircle2 className="h-8 w-8 text-teal-600 dark:text-teal-400" />
@@ -140,16 +153,20 @@ export default function CtaSection() {
                 </button>
               </div>
             ) : (
-              // Display the form when not submitted yet
               <>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                   Join the Waitlist
                 </h3>
 
-                {/* Form for collecting user info */}
+                {/* Error Message if not logged in */}
+                {errorMessage && (
+                  <p className="text-red-500 text-sm text-center mb-4">
+                    {errorMessage}
+                  </p>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 gap-6">
-                    {/* Full Name Field */}
                     <div className="space-y-2">
                       <label
                         htmlFor="name"
@@ -169,7 +186,6 @@ export default function CtaSection() {
                       />
                     </div>
 
-                    {/* Email Address Field */}
                     <div className="space-y-2">
                       <label
                         htmlFor="email"
@@ -189,7 +205,6 @@ export default function CtaSection() {
                       />
                     </div>
 
-                    {/* Role Selection Field */}
                     <div className="space-y-2">
                       <label
                         htmlFor="role"
@@ -218,7 +233,6 @@ export default function CtaSection() {
                       </select>
                     </div>
 
-                    {/* Message Field (Optional) */}
                     <div className="space-y-2">
                       <label
                         htmlFor="message"
@@ -237,7 +251,6 @@ export default function CtaSection() {
                     </div>
                   </div>
 
-                  {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={isSubmitting}
@@ -246,7 +259,6 @@ export default function CtaSection() {
                     {isSubmitting ? "Submitting..." : "Join Waitlist"}
                   </button>
 
-                  {/* Privacy Policy Notice */}
                   <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4">
                     By submitting this form, you agree to our Privacy Policy and
                     Terms of Service. We'll never share your information without

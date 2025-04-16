@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Moon, Sun } from "lucide-react";
+import useAuth from "../hooks/useAuth"; // Import the useAuth hook
 
 const Navbar = () => {
+  const { user, logout } = useAuth(); // Get user and logout function from useAuth
   const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -53,7 +55,7 @@ const Navbar = () => {
           {/* Toggle Dark Mode */}
           <button
             onClick={toggleDarkMode}
-            className="text-gray-700 dark:text-gray-200"
+            className="text-gray-700 dark:text-gray-200 cursor-pointer"
           >
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
@@ -61,10 +63,27 @@ const Navbar = () => {
           {/* Hamburger Icon - Mobile */}
           <button
             onClick={toggleMenu}
-            className="md:hidden text-gray-700 dark:text-gray-200"
+            className="md:hidden text-gray-700 cursor-pointer dark:text-gray-200"
           >
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
+
+          {/* Login/Logout Button */}
+          {user ? (
+            <button
+              onClick={logout}
+              className="text-gray-700 dark:text-gray-200 hover:text-primary"
+            >
+              Logout
+            </button>
+          ) : (
+            <a
+              href="/login" // Link to your login page or a modal
+              className="text-gray-700 dark:text-gray-200 hover:text-primary"
+            >
+              Login
+            </a>
+          )}
         </div>
       </div>
 
@@ -75,7 +94,7 @@ const Navbar = () => {
         } overflow-hidden bg-white dark:bg-gray-900 px-4 py-4 space-y-3 text-gray-700 dark:text-gray-200`}
       >
         <a
-          href="#home"
+          href="#"
           onClick={() => setMenuOpen(false)}
           className="block py-2 px-4 hover:text-primary"
         >
