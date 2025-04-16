@@ -18,20 +18,15 @@ export default function Traction() {
   // Animate counters when in view
   useEffect(() => {
     if (isInView) {
-      const duration = 2000; // 2 seconds
-      const interval = 20; // Update every 20ms
+      const duration = 2000;
+      const interval = 20;
 
-      const steps1 = Math.floor(duration / interval);
-      const increment1 = 5000 / steps1;
+      const steps = Math.floor(duration / interval);
 
-      const steps2 = Math.floor(duration / interval);
-      const increment2 = 12 / steps2;
-
-      const steps3 = Math.floor(duration / interval);
-      const increment3 = 93 / steps3;
-
-      const steps4 = Math.floor(duration / interval);
-      const increment4 = 3 / steps4;
+      const increment1 = 10000 / steps;
+      const increment2 = 35000 / steps;
+      const increment3 = 500 / steps;
+      const increment4 = 3 / steps;
 
       let current1 = 0;
       let current2 = 0;
@@ -44,15 +39,15 @@ export default function Traction() {
         current3 += increment3;
         current4 += increment4;
 
-        setCount1(Math.min(Math.floor(current1), 5000));
-        setCount2(Math.min(Math.floor(current2 * 10) / 10, 12));
-        setCount3(Math.min(Math.floor(current3), 93));
+        setCount1(Math.min(Math.floor(current1), 10000));
+        setCount2(Math.min(Math.floor(current2), 35000));
+        setCount3(Math.min(Math.floor(current3), 500));
         setCount4(Math.min(Math.floor(current4 * 10) / 10, 3));
 
         if (
-          current1 >= 5000 &&
-          current2 >= 12 &&
-          current3 >= 93 &&
+          current1 >= 10000 &&
+          current2 >= 35000 &&
+          current3 >= 500 &&
           current4 >= 3
         ) {
           clearInterval(timer);
@@ -62,14 +57,6 @@ export default function Traction() {
       return () => clearInterval(timer);
     }
   }, [isInView]);
-
-  const partners = [
-    "Mayo Clinic",
-    "Stanford Health",
-    "Alzheimer's Association",
-    "National Institute on Aging",
-    "AARP",
-  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -94,6 +81,7 @@ export default function Traction() {
 
   return (
     <section
+      id="Impact"
       ref={sectionRef}
       className="py-20 bg-gray-50 dark:bg-gray-900 px-4 sm:px-6 lg:px-8"
     >
@@ -126,7 +114,9 @@ export default function Traction() {
             <div className="text-4xl font-bold text-teal-600 dark:text-teal-400 mb-2">
               {count1.toLocaleString()}+
             </div>
-            <p className="text-gray-600 dark:text-gray-300">Users Enrolled</p>
+            <p className="text-gray-600 dark:text-gray-300">
+              Insights Collected
+            </p>
           </motion.div>
 
           <motion.div
@@ -138,10 +128,10 @@ export default function Traction() {
             className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg"
           >
             <div className="text-4xl font-bold text-teal-600 dark:text-teal-400 mb-2">
-              {count2.toFixed(1)}M
+              {count2.toLocaleString()}+
             </div>
             <p className="text-gray-600 dark:text-gray-300">
-              Assessments Completed
+              Hospitals & Patient Network
             </p>
           </motion.div>
 
@@ -154,10 +144,10 @@ export default function Traction() {
             className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-lg"
           >
             <div className="text-4xl font-bold text-teal-600 dark:text-teal-400 mb-2">
-              {count3}%
+              {count3}+
             </div>
             <p className="text-gray-600 dark:text-gray-300">
-              Detection Accuracy
+              Institutions Supported
             </p>
           </motion.div>
 
@@ -173,7 +163,7 @@ export default function Traction() {
               {count4.toFixed(1)}x
             </div>
             <p className="text-gray-600 dark:text-gray-300">
-              Earlier Detection
+              Faster Detection than Traditional Methods
             </p>
           </motion.div>
         </div>
@@ -189,78 +179,52 @@ export default function Traction() {
               Trusted by Leading Organizations
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="col-span-1 md:col-span-2">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+            >
+              {[
+                "5 clinical trials completed",
+                "Featured in Journal of Alzheimer's Disease",
+                "Endorsed by leading neurologists",
+                "HIPAA and GDPR compliant",
+                "FDA breakthrough device designation",
+                "Integrated with major EHR systems",
+              ].map((item, index) => (
                 <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate={isInView ? "visible" : "hidden"}
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                  key={index}
+                  variants={itemVariants}
+                  className="flex items-start"
                 >
-                  {[
-                    "5 clinical trials completed",
-                    "Featured in Journal of Alzheimer's Disease",
-                    "Endorsed by leading neurologists",
-                    "HIPAA and GDPR compliant",
-                    "FDA breakthrough device designation",
-                    "Integrated with major EHR systems",
-                  ].map((item, index) => (
-                    <motion.div
-                      key={index}
-                      variants={itemVariants}
-                      className="flex items-start"
-                    >
-                      <CheckCircle2 className="h-5 w-5 text-teal-500 dark:text-teal-400 mt-0.5 flex-shrink-0" />
-                      <span className="ml-2 text-gray-700 dark:text-gray-300">
-                        {item}
-                      </span>
-                    </motion.div>
-                  ))}
+                  <CheckCircle2 className="h-5 w-5 text-teal-500 dark:text-teal-400 mt-0.5 flex-shrink-0" />
+                  <span className="ml-2 text-gray-700 dark:text-gray-300">
+                    {item}
+                  </span>
                 </motion.div>
+              ))}
+            </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{ delay: 1, duration: 0.8 }}
-                  className="mt-8 p-4 bg-teal-50 dark:bg-teal-900/30 rounded-lg"
-                >
-                  <p className="text-gray-700 dark:text-gray-300 italic">
-                    "MemoTag represents a significant advancement in how we
-                    approach dementia care. The ability to detect subtle
-                    cognitive changes years before traditional methods could
-                    revolutionize early intervention strategies."
-                  </p>
-                  <div className="mt-3 font-medium text-gray-900 dark:text-white">
-                    Dr. Sarah Chen, Neurologist
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    Stanford Memory Disorders Center
-                  </div>
-                </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ delay: 1, duration: 0.8 }}
+              className="mt-10 p-6 bg-teal-50 dark:bg-teal-900/30 rounded-lg"
+            >
+              <p className="text-gray-700 dark:text-gray-300 italic">
+                "MemoTag represents a significant advancement in how we approach
+                dementia care. The ability to detect subtle cognitive changes
+                years before traditional methods could revolutionize early
+                intervention strategies."
+              </p>
+              <div className="mt-3 font-medium text-gray-900 dark:text-white">
+                Dr. Sarah Chen, Neurologist
               </div>
-
-              <div>
-                <h4 className="font-medium text-gray-900 dark:text-white mb-4">
-                  Research Partners
-                </h4>
-                <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate={isInView ? "visible" : "hidden"}
-                  className="space-y-3"
-                >
-                  {partners.map((partner, index) => (
-                    <motion.div
-                      key={index}
-                      variants={itemVariants}
-                      className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center"
-                    >
-                      {partner}
-                    </motion.div>
-                  ))}
-                </motion.div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Stanford Memory Disorders Center
               </div>
-            </div>
+            </motion.div>
           </div>
         </motion.div>
       </div>

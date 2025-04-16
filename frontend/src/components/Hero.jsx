@@ -8,24 +8,27 @@ export default function Hero() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-950 px-4 sm:px-6 lg:px-8">
+    <section
+      id="#"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-950 px-4 sm:px-6 lg:px-8"
+    >
       {/* Background grid pattern */}
       <div className="absolute inset-0 z-0 opacity-20 dark:opacity-10">
         <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px] dark:bg-[radial-gradient(#4b5563_1px,transparent_1px)]"></div>
       </div>
 
-      <div className="container mx-auto max-w-7xl z-10">
+      <div className="container mx-auto max-w-7xl z-10  ">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* LEFT - TEXT */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center lg:text-left"
+            className="text-center mt-32 lg:text-left "
           >
             {/* Title */}
             <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl  font-bold text-gray-900 dark:text-white mb-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}

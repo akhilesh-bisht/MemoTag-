@@ -14,88 +14,72 @@ import {
 } from "lucide-react";
 
 export default function Footer() {
-  // Reference for footer element to track its visibility
   const footerRef = useRef(null);
-
-  // Check if footer is in view, to trigger animation when scrolled into view
   const isInView = useInView(footerRef, { once: true, amount: 0.3 });
 
-  // Get the current year for the copyright section
   const currentYear = new Date().getFullYear();
 
-  // Footer links data
   const footerLinks = [
     {
-      title: "Product",
-      links: [
-        { name: "Features", href: "#" },
-        { name: "Pricing", href: "#" },
-        { name: "Case Studies", href: "#" },
-        { name: "Resources", href: "#" },
-      ],
-    },
-    {
-      title: "Company",
+      title: "Explore",
       links: [
         { name: "About Us", href: "#" },
-        { name: "Team", href: "#" },
-        { name: "Careers", href: "#" },
-        { name: "Press", href: "#" },
+        { name: "MindMap", href: "#" },
+        { name: "Caregivers", href: "#" },
+        { name: "FAQ", href: "#" },
+        { name: "Blogs", href: "#" },
+        { name: "Testimonials", href: "#" },
+        { name: "Try Memotag", href: "#" },
+        { name: "Contact Us", href: "#" },
       ],
+    },
+  ];
+
+  const socialLinks = [
+    {
+      icon: <Linkedin className="h-5 w-5" />,
+      href: "https://www.linkedin.com/company/memotag/",
+      label: "LinkedIn",
     },
     {
-      title: "Legal",
-      links: [
-        { name: "Privacy Policy", href: "#" },
-        { name: "Terms of Service", href: "#" },
-        { name: "Cookie Policy", href: "#" },
-        { name: "HIPAA Compliance", href: "#" },
-      ],
+      icon: <Instagram className="h-5 w-5" />,
+      href: "https://www.instagram.com/memotag.in/",
+      label: "Instagram",
     },
   ];
 
-  // Social media links and icons
-  const socialLinks = [
-    { icon: <Facebook className="h-5 w-5" />, href: "#", label: "Facebook" },
-    { icon: <Twitter className="h-5 w-5" />, href: "#", label: "Twitter" },
-    { icon: <Linkedin className="h-5 w-5" />, href: "#", label: "LinkedIn" },
-    { icon: <Instagram className="h-5 w-5" />, href: "#", label: "Instagram" },
-  ];
-
-  // Contact information (email, phone, address)
   const contactInfo = [
-    { icon: <Mail className="h-5 w-5" />, text: "contact@memotag.ai" },
-    { icon: <Phone className="h-5 w-5" />, text: "+1 (800) 123-4567" },
-    { icon: <MapPin className="h-5 w-5" />, text: "San Francisco, CA" },
+    {
+      icon: <MapPin className="h-5 w-5" />,
+      text: "A-19 Ramesh Nagar, New Delhi 110015",
+    },
+    { icon: <Mail className="h-5 w-5" />, text: "contact@memotag.io" },
+    { icon: <Phone className="h-5 w-5" />, text: "+91 880056622" },
   ];
 
   return (
     <footer
       ref={footerRef}
-      className="bg-gray-50 dark:bg-gray-900 pt-16 pb-8 px-4 sm:px-6 lg:px-8"
+      className="relative bg-gray-50 dark:bg-gray-900 pt-16 pb-8 px-4 sm:px-6 lg:px-8"
     >
       <div className="container mx-auto max-w-7xl">
-        {/* Footer content grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
-          {/* Footer left column: brand info and contact */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5 }}
             className="lg:col-span-2"
           >
-            {/* Brand description */}
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-teal-600 dark:text-teal-400">
                 MemoTag
               </h2>
               <p className="text-gray-600 dark:text-gray-300 mt-2">
-                Revolutionizing dementia care through AI-powered early detection
-                and continuous monitoring.
+                An AI-wearable with cognitive health tracking & data analysis
+                tool for dementia & elder caregiving.
               </p>
             </div>
 
-            {/* Contact details */}
             <div className="space-y-3">
               {contactInfo.map((item, index) => (
                 <div key={index} className="flex items-center">
@@ -109,7 +93,6 @@ export default function Footer() {
               ))}
             </div>
 
-            {/* Social media icons */}
             <div className="mt-6 flex space-x-4">
               {socialLinks.map((item, index) => (
                 <a
@@ -117,6 +100,8 @@ export default function Footer() {
                   href={item.href}
                   className="text-gray-400 hover:text-teal-600 dark:text-gray-500 dark:hover:text-teal-400 transition-colors"
                   aria-label={item.label}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {item.icon}
                 </a>
@@ -124,7 +109,6 @@ export default function Footer() {
             </div>
           </motion.div>
 
-          {/* Footer columns for links (Product, Company, Legal) */}
           {footerLinks.map((column, columnIndex) => (
             <motion.div
               key={columnIndex}
@@ -151,7 +135,6 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Copyright section */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
@@ -159,11 +142,9 @@ export default function Footer() {
           className="pt-8 mt-8 border-t border-gray-200 dark:border-gray-800"
         >
           <div className="flex flex-col md:flex-row justify-between items-center">
-            {/* Copyright text */}
             <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 md:mb-0">
               &copy; {currentYear} MemoTag, Inc. All rights reserved.
             </p>
-            {/* Footer navigation links (Privacy, Terms, Cookies) */}
             <div className="flex space-x-6">
               <a
                 href="#"
@@ -187,6 +168,13 @@ export default function Footer() {
           </div>
         </motion.div>
       </div>
+
+      {/* Decorative Image in Bottom-Right Corner */}
+      <img
+        src="https://images.unsplash.com/photo-1588776814546-ec7b58f98a4b?auto=format&fit=crop&w=500&q=60"
+        alt="Healthcare AI concept"
+        className="absolute bottom-4 right-4 w-32 h-auto rounded-lg shadow-lg opacity-20 pointer-events-none hidden md:block"
+      />
     </footer>
   );
 }

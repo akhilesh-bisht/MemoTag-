@@ -4,14 +4,12 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
+import axios from "axios";
 
 export default function CtaSection() {
-  // Reference for detecting if section is in view for animations
   const sectionRef = useRef(null);
-  // Detect when the section is in view (for animation)
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
-  // State to manage form input values
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -19,40 +17,46 @@ export default function CtaSection() {
     message: "",
   });
 
-  // States to manage submission and submission status
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Handle changes in input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call with a timeout
-    setTimeout(() => {
-      // Normally, this is where you'd send the data to Supabase or another backend
-      console.log("Form submitted:", formState);
-      setIsSubmitting(false);
-      setIsSubmitted(true);
+    try {
+      // Replace with your backend API endpoint
+      const response = await axios.post("/api/submitForm", formState);
 
-      // Reset form state after successful submission
-      setFormState({
-        name: "",
-        email: "",
-        role: "",
-        message: "",
-      });
-    }, 1500);
+      if (response.status === 200) {
+        // Simulating a successful form submission
+        console.log("Form submitted:", formState);
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+
+        // Reset form state after successful submission
+        setFormState({
+          name: "",
+          email: "",
+          role: "",
+          message: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setIsSubmitting(false);
+      // Handle error (show a message, etc.)
+    }
   };
 
   return (
     <section
+      id="contact"
       ref={sectionRef}
       className="py-20 bg-white dark:bg-gray-950 px-4 sm:px-6 lg:px-8"
     >

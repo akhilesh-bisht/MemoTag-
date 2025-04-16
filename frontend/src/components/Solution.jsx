@@ -6,13 +6,13 @@ import { useRef } from "react";
 import { Brain, LineChart, Smartphone, Shield, ArrowRight } from "lucide-react";
 
 export default function Solution() {
-  // Reference to the section element for in-view detection
+  // Create a reference for the section to observe scroll position
   const sectionRef = useRef(null);
 
-  // Check if the section is in view, triggering animations when scrolled into view
+  // Use framer-motion hook to check if the section is in view
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
-  // Define the features of the solution to be displayed in the section
+  // List of core MemoTag features
   const features = [
     {
       icon: <Brain className="w-8 h-8" />,
@@ -45,36 +45,37 @@ export default function Solution() {
     },
   ];
 
-  // Variants for animations of container and individual items
+  // Animation variant for the container that wraps all feature cards
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2, // Stagger children animations with a delay
+        staggerChildren: 0.2, // Animate children one after the other
       },
     },
   };
 
+  // Animation variant for each feature card
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 }, // Initial state (off-screen and invisible)
+    hidden: { y: 20, opacity: 0 }, // Start lower and invisible
     visible: {
       y: 0,
-      opacity: 1,
+      opacity: 1, // Slide in and fade in
       transition: {
-        duration: 0.5, // Animation duration for individual items
+        duration: 0.5,
       },
     },
   };
 
   return (
-    // Main section of the solution description
     <section
+      id="work"
       ref={sectionRef}
       className="py-20 bg-white dark:bg-gray-950 px-4 sm:px-6 lg:px-8"
     >
       <div className="container mx-auto max-w-7xl">
-        {/* Title and description section with animation */}
+        {/* Header: Title and description of MemoTag's solution */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -90,7 +91,7 @@ export default function Solution() {
           </p>
         </motion.div>
 
-        {/* Features grid with individual animations */}
+        {/* Animated grid of feature cards */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -104,12 +105,13 @@ export default function Solution() {
               className="bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
             >
               <div className="p-6">
-                {/* Feature icon with gradient background */}
+                {/* Feature icon with colored gradient background */}
                 <div
                   className={`inline-flex items-center justify-center p-3 bg-gradient-to-r ${feature.color} rounded-lg text-white mb-5`}
                 >
                   {feature.icon}
                 </div>
+
                 {/* Feature title and description */}
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                   {feature.title}
@@ -122,7 +124,7 @@ export default function Solution() {
           ))}
         </motion.div>
 
-        {/* The MemoTag Difference section */}
+        {/* Highlight section: The MemoTag Difference */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
@@ -130,7 +132,7 @@ export default function Solution() {
           className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 rounded-2xl overflow-hidden shadow-xl"
         >
           <div className="grid grid-cols-1 lg:grid-cols-2">
-            {/* Left side: Benefits list */}
+            {/* Benefits list */}
             <div className="p-8 lg:p-12">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
                 The MemoTag Difference
@@ -155,11 +157,11 @@ export default function Solution() {
               </ul>
             </div>
 
-            {/* Right side: AI-Powered Analysis */}
+            {/* Visual block showing AI-powered metrics */}
             <div className="bg-gradient-to-br from-teal-500 to-cyan-600 dark:from-teal-600 dark:to-cyan-700 p-8 lg:p-12 flex items-center justify-center">
-              <div className="text-white">
-                {/* AI Analysis section */}
-                <div className="mb-6 text-center">
+              <div className="text-white text-center">
+                {/* AI Analysis Heading */}
+                <div className="mb-6">
                   <div className="inline-block p-3 bg-white/20 rounded-full mb-4">
                     <Brain className="w-12 h-12" />
                   </div>
@@ -173,7 +175,7 @@ export default function Solution() {
                   </p>
                 </div>
 
-                {/* Stats grid */}
+                {/* Stats section */}
                 <div className="bg-white/10 rounded-xl p-5">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center">
