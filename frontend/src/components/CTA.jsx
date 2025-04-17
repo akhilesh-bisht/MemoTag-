@@ -20,8 +20,8 @@ export default function CtaSection() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
-  const [errorMessage, setErrorMessage] = useState(""); // For displaying error messages
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); 
 
   // Example function to check if the user is logged in
   const checkLoginStatus = () => {

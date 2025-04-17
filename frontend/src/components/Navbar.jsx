@@ -3,7 +3,7 @@ import { Menu, X, Moon, Sun } from "lucide-react";
 import useAuth from "../hooks/useAuth"; // Import the useAuth hook
 
 const Navbar = () => {
-  const { user, logout } = useAuth(); // Get user and logout function from useAuth
+  const { user, logout } = useAuth();
   const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -78,7 +78,7 @@ const Navbar = () => {
             </button>
           ) : (
             <a
-              href="/login" // Link to your login page or a modal
+              href="/login"
               className="text-gray-700 dark:text-gray-200 hover:text-primary"
             >
               Login

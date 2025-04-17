@@ -93,6 +93,9 @@ export default function Footer() {
               ))}
             </div>
 
+{/*   social links */}
+
+
             <div className="mt-6 flex space-x-4">
               {socialLinks.map((item, index) => (
                 <a
@@ -109,6 +112,7 @@ export default function Footer() {
             </div>
           </motion.div>
 
+{/*   footer links */}
           {footerLinks.map((column, columnIndex) => (
             <motion.div
               key={columnIndex}
@@ -169,7 +173,7 @@ export default function Footer() {
         </motion.div>
       </div>
 
-      {/* Decorative Image in Bottom-Right Corner */}
+      {/*  Image in Bottom-Right Corner */}
       <img
         src="https://images.unsplash.com/photo-1588776814546-ec7b58f98a4b?auto=format&fit=crop&w=500&q=60"
         alt="Healthcare AI concept"
