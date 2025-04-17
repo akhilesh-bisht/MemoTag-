@@ -6,6 +6,7 @@ import { useInView } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { submitForm } from "../hooks/useAuth";
 
 export default function CtaSection() {
   const sectionRef = useRef(null);
@@ -21,12 +22,12 @@ export default function CtaSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(""); 
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Example function to check if the user is logged in
   const checkLoginStatus = () => {
     // Replace with actual login check (e.g., check if JWT token exists)
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem("user");
     if (token) {
       setIsLoggedIn(true);
     } else {
@@ -54,7 +55,8 @@ export default function CtaSection() {
     setErrorMessage(""); // Clear any previous error message
 
     try {
-      const response = await axios.post("/api/submitForm", formState);
+      // const response = await axios.post("/api/submitForm", formState);
+      submitForm(formState);
 
       if (response.status === 200) {
         setIsSubmitting(false);

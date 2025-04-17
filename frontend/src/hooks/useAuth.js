@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const BASE_URL = "https://student-job-tracker-fnbb.onrender.com/api/user";
+// const BASE_URL = "https://student-job-tracker-fnbb.onrender.com/api/user";
+const BASE_URL = "/api";
 
 export default function useAuth() {
   const [user, setUser] = useState(null);
@@ -15,7 +16,7 @@ export default function useAuth() {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post(`${BASE_URL}/login`, {
+      const res = await axios.post(`${BASE_URL}/user/login`, {
         email,
         password,
       });
@@ -34,7 +35,7 @@ export default function useAuth() {
 
   const signup = async (email, password) => {
     try {
-      const res = await axios.post(`${BASE_URL}/register`, {
+      const res = await axios.post(`${BASE_URL}/user/register`, {
         email,
         password,
       });
