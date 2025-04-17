@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Moon, Sun } from "lucide-react";
-import useAuth from "../hooks/useAuth"; // Import the useAuth hook
+import useAuth from "../hooks/useAuth"; // Custom auth hook
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, loading } = useAuth(); // 🆕 Added loading
   const [darkMode, setDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -29,22 +29,22 @@ const Navbar = () => {
         {/* Nav Links - Desktop */}
         <ul className="hidden md:flex space-x-6 text-gray-700 dark:text-gray-200">
           <li>
-            <a href="#" className="hover:text-primary" smooth="true">
+            <a href="#" className="hover:text-primary">
               Home
             </a>
           </li>
           <li>
-            <a href="#work" className="hover:text-primary" smooth="true">
+            <a href="#work" className="hover:text-primary">
               How it works
             </a>
           </li>
           <li>
-            <a href="#Impact" className="hover:text-primary" smooth="true">
+            <a href="#Impact" className="hover:text-primary">
               Impact
             </a>
           </li>
           <li>
-            <a href="#contact" className="hover:text-primary" smooth="true">
+            <a href="#contact" className="hover:text-primary">
               Contact
             </a>
           </li>
@@ -52,38 +52,39 @@ const Navbar = () => {
 
         {/* Right Controls */}
         <div className="flex items-center gap-4">
-          {/* Toggle Dark Mode */}
+          {/* Dark Mode */}
           <button
             onClick={toggleDarkMode}
-            className="text-gray-700 dark:text-gray-200 cursor-pointer"
+            className="text-gray-700 dark:text-gray-200"
           >
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
-          {/* Hamburger Icon - Mobile */}
+          {/* Hamburger */}
           <button
             onClick={toggleMenu}
-            className="md:hidden text-gray-700 cursor-pointer dark:text-gray-200"
+            className="md:hidden text-gray-700 dark:text-gray-200"
           >
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Login/Logout Button */}
-          {user ? (
-            <button
-              onClick={logout}
-              className="text-gray-700 dark:text-gray-200 hover:text-primary"
-            >
-              Logout
-            </button>
-          ) : (
-            <a
-              href="/login"
-              className="text-gray-700 dark:text-gray-200 hover:text-primary"
-            >
-              Login
-            </a>
-          )}
+          {/* ✅ Auth Buttons */}
+          {!loading &&
+            (user ? (
+              <button
+                onClick={logout}
+                className="text-gray-700 dark:text-gray-200 hover:text-primary"
+              >
+                Logout
+              </button>
+            ) : (
+              <a
+                href="/login"
+                className="text-gray-700 dark:text-gray-200 hover:text-primary"
+              >
+                Login
+              </a>
+            ))}
         </div>
       </div>
 

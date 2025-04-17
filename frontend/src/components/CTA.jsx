@@ -1,10 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { submitForm } from "../hooks/useAuth";
 
@@ -12,6 +10,7 @@ export default function CtaSection() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
   const navigate = useNavigate();
+
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -24,17 +23,10 @@ export default function CtaSection() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Example function to check if the user is logged in
-  const checkLoginStatus = () => {
-    // Replace with actual login check (e.g., check if JWT token exists)
+  useEffect(() => {
     const token = localStorage.getItem("user");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-      navigate("/login");
-    }
-  };
+    setIsLoggedIn(!!token);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,22 +36,19 @@ export default function CtaSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if the user is logged in before submitting the form
-    checkLoginStatus();
     if (!isLoggedIn) {
       setErrorMessage("You must be logged in to join the waitlist.");
-      return; // Stop form submission if not logged in
+      navigate("/login");
+      return;
     }
 
     setIsSubmitting(true);
-    setErrorMessage(""); // Clear any previous error message
+    setErrorMessage("");
 
     try {
-      // const response = await axios.post("/api/submitForm", formState);
-      submitForm(formState);
+      const response = await submitForm(formState);
 
-      if (response.status === 200) {
-        setIsSubmitting(false);
+      if (response?.status === 200) {
         setIsSubmitted(true);
         setFormState({
           name: "",
@@ -70,8 +59,9 @@ export default function CtaSection() {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setErrorMessage("Something went wrong. Please try again.");
+    } finally {
       setIsSubmitting(false);
-      // Handle error (show a message, etc.)
     }
   };
 
@@ -83,9 +73,10 @@ export default function CtaSection() {
     >
       <div className="container mx-auto max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
@@ -128,9 +119,10 @@ export default function CtaSection() {
             </div>
           </motion.div>
 
+          {/* Right Form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8 }}
             className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 shadow-xl"
           >
@@ -160,7 +152,6 @@ export default function CtaSection() {
                   Join the Waitlist
                 </h3>
 
-                {/* Error Message if not logged in */}
                 {errorMessage && (
                   <p className="text-red-500 text-sm text-center mb-4">
                     {errorMessage}
@@ -248,7 +239,7 @@ export default function CtaSection() {
                         placeholder="Tell us about your interest in MemoTag..."
                         value={formState.message}
                         onChange={handleChange}
-                        className="w-full p-3 border border-gray-300 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 min-h-[100px]"
+                        className="w-full p-3 border border-gray-300 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500"
                       />
                     </div>
                   </div>
@@ -256,16 +247,10 @@ export default function CtaSection() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-teal-600 hover:bg-teal-700 text-white py-6 h-auto text-lg font-medium rounded-xl"
+                    className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:opacity-50"
                   >
-                    {isSubmitting ? "Submitting..." : "Join Waitlist"}
+                    {isSubmitting ? "Submitting..." : "Join the Waitlist"}
                   </button>
-
-                  <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4">
-                    By submitting this form, you agree to our Privacy Policy and
-                    Terms of Service. We'll never share your information without
-                    permission.
-                  </p>
                 </form>
               </>
             )}

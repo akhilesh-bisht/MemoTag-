@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-// const BASE_URL = "https://student-job-tracker-fnbb.onrender.com/api/user";
-const BASE_URL = "/api";
+const BASE_URL = "https://memotag-6thh.onrender.com/api";
 
 export default function useAuth() {
   const [user, setUser] = useState(null);
@@ -15,8 +14,9 @@ export default function useAuth() {
   }, []);
 
   const login = async (email, password) => {
+    setLoading(true);
     try {
-      const res = await axios.post(`${BASE_URL}/user/login`, {
+      const res = await axios.post(`${BASE_URL}/users/login`, {
         email,
         password,
       });
@@ -30,12 +30,15 @@ export default function useAuth() {
         success: false,
         message: err.response?.data?.message || "Login failed",
       };
+    } finally {
+      setLoading(false);
     }
   };
 
   const signup = async (email, password) => {
+    setLoading(true);
     try {
-      const res = await axios.post(`${BASE_URL}/user/register`, {
+      const res = await axios.post(`${BASE_URL}/users/register`, {
         email,
         password,
       });
@@ -49,6 +52,8 @@ export default function useAuth() {
         success: false,
         message: err.response?.data?.message || "Signup failed",
       };
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,5 +65,5 @@ export default function useAuth() {
   return { user, isLoggedIn: !!user, login, signup, logout, loading };
 }
 
-// Form submission API call
-export const submitForm = (data) => API.post("/submitForm", data);
+// Form submission
+export const submitForm = (data) => axios.post(`${BASE_URL}/submitForm`, data);

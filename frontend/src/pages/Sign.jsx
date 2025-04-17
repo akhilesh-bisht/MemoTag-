@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 export default function SignupPage() {
-  const { signup } = useAuth();
+  const { signup, loading } = useAuth(); // include loading
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,6 +11,7 @@ export default function SignupPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // reset error before signup attempt
     const res = await signup(email, password);
     if (res.success) {
       navigate("/");
@@ -45,9 +46,10 @@ export default function SignupPage() {
           />
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white p-3 rounded hover:bg-indigo-700"
+            className="w-full bg-indigo-600 text-white p-3 rounded hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading}
           >
-            Sign Up
+            {loading ? "Signing up..." : "Sign Up"}
           </button>
         </form>
         <p className="mt-4 text-sm text-center">
